@@ -17,8 +17,8 @@ npm run preview
 | `src/styles/global.css` | Design tokens (colour, type scale, spacing), buttons, chips, motion rules |
 | `src/components/` | One component per section, plus `DogLoader`, `Palette` (⌘K), `Header` |
 | `src/scripts/` | `hero.ts` (clock + GitHub commit), `ballpit.ts` (canvas physics), `minecraft.ts` (3D pixel avatar), `desktop.ts` (draggable windows), `motion.ts` (slower wheel + sweep reveal), `embers.ts` (background embers), `chrome.ts` (nav, menu, palette, image fallbacks) |
-| `public/logos/` | Tech logos. Regenerate with `node scripts/build-logos.mjs` |
-| `public/og.png` | Social preview. Source: `scripts/og.html` |
+| `public/assets/logos/` | Tech logos. Regenerate with `node scripts/build-logos.mjs` |
+| `public/assets/og.png` | Social preview. Source: `scripts/og.html` |
 
 ## Deploy (Vercel)
 

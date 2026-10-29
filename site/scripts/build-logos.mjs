@@ -1,4 +1,4 @@
-// Generates public/logos/*.svg|png from icon packages + crops from the NBA logo.
+// Generates public/assets/logos/*.svg|png from icon packages + crops from the NBA logo.
 // Run: node scripts/build-logos.mjs
 import fs from 'node:fs';
 import path from 'node:path';
@@ -6,7 +6,7 @@ import sharp from 'sharp';
 import * as si from 'simple-icons';
 import * as si11 from 'si11';
 
-const out = 'public/logos';
+const out = 'public/assets/logos';
 fs.mkdirSync(out, { recursive: true });
 
 const dev = (n, v = 'original') => fs.readFileSync(`node_modules/devicon/icons/${n}/${n}-${v}.svg`, 'utf8');

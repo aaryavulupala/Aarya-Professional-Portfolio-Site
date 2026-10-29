@@ -15,7 +15,7 @@ const { items, label } = Astro.props;
         const full = 'full' in t && t.full;
         return (
           <li class="chip">
-            <img class:list={['chip__logo', { 'chip__logo--full': full }]} src={`/logos/${t.logo}`} alt="" width="20" height="20" loading="lazy" decoding="async" />
+            <img class:list={['chip__logo', { 'chip__logo--full': full }]} src={`/assets/logos/${t.logo}`} alt="" width="20" height="20" loading="lazy" decoding="async" />
             {t.name}
           </li>
         );

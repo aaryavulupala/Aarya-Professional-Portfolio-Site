@@ -28,8 +28,8 @@ const detail: Record<string, string> = { aws: 'EC2, S3, RDS, Lambda' };
                 const t = tech[k];
                 const full = 'full' in t && t.full;
                 return (
-                  <li class="chip" data-logo={`/logos/${t.logo}`} data-name={t.name} data-detail={detail[k] ?? ''} data-full={full ? '1' : ''}>
-                    <img class:list={['chip__logo', { 'chip__logo--full': full }]} src={`/logos/${t.logo}`} alt="" width="20" height="20" loading="lazy" />
+                  <li class="chip" data-logo={`/assets/logos/${t.logo}`} data-name={t.name} data-detail={detail[k] ?? ''} data-full={full ? '1' : ''}>
+                    <img class:list={['chip__logo', { 'chip__logo--full': full }]} src={`/assets/logos/${t.logo}`} alt="" width="20" height="20" loading="lazy" />
                     {t.name}
                     {detail[k] ? ` (${detail[k]})` : ''}
                   </li>
