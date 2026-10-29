@@ -1,0 +1,27 @@
+---
+const built = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'America/New_York' });
+---
+
+<footer class="footer">
+  <div class="wrap footer__row mono">
+    <p>Designed and built by Aarya Vulupala. Astro, TypeScript and hand-written CSS.</p>
+    <p class="muted">Set in Newsreader, Schibsted Grotesk and IBM Plex Mono. Updated {built}.</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--rule);
+    padding-block: var(--space-7);
+  }
+  .footer__row {
+    display: grid;
+    gap: var(--space-2);
+  }
+  @media (min-width: 800px) {
+    .footer__row {
+      grid-template-columns: 1fr auto;
+      gap: var(--space-6);
+    }
+  }
+</style>

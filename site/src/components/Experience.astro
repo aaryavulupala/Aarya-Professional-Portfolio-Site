@@ -1,0 +1,27 @@
+---
+import { experience, leadership } from '../data/content';
+import Section from './Section.astro';
+import Role from './Role.astro';
+---
+
+<Section id="experience" num="02" label="Experience">
+  <p class="section__intro">Shipping software, and running things.</p>
+  <div>{experience.map((r) => <Role item={r} />)}</div>
+
+  <h3 class="sub mono">Leadership</h3>
+  <div>{leadership.map((r) => <Role item={r} />)}</div>
+</Section>
+
+<style>
+  .sub {
+    margin: var(--space-8) 0 var(--space-6);
+    padding-top: var(--space-6);
+    border-top: 2px solid var(--ink);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-muted);
+  }
+</style>

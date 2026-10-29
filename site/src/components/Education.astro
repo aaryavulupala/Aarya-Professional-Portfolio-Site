@@ -1,0 +1,86 @@
+---
+import { Image } from 'astro:assets';
+import { education } from '../data/content';
+import Section from './Section.astro';
+---
+
+<Section id="education" num="03" label="Education">
+  <div class="edu">
+    <div class="edu__school">
+      <div class="logo">
+        <Image src={education.logo} alt={education.logoAlt} widths={[96, 192]} sizes="96px" quality={85} loading="lazy" data-fallback />
+      </div>
+      <div>
+        <h3>{education.school}</h3>
+        <p class="edu__degree">{education.degree}</p>
+      </div>
+    </div>
+
+    <div>
+      <h4 class="mono eyebrow">Relevant coursework</h4>
+      <ul class="courses">
+        {education.coursework.map((c) => <li>{c}</li>)}
+      </ul>
+    </div>
+  </div>
+</Section>
+
+<style>
+  .edu {
+    display: grid;
+    gap: var(--space-7);
+  }
+  .edu__school {
+    display: flex;
+    gap: var(--space-5);
+    align-items: center;
+  }
+  .logo {
+    flex: none;
+    width: 88px;
+    height: 88px;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    background: #fff;
+    display: grid;
+    place-items: center;
+  }
+  .logo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 6px;
+  }
+  .edu__degree {
+    font-size: var(--step-1);
+    margin-top: var(--space-1);
+  }
+  .eyebrow {
+    margin: 0 0 var(--space-4);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-muted);
+  }
+  .courses {
+    display: grid;
+    gap: 0 var(--space-6);
+    max-width: 640px;
+  }
+  .courses li {
+    padding-block: var(--space-3);
+    border-bottom: 1px solid var(--rule);
+    font-size: var(--step-0);
+  }
+  @media (min-width: 600px) {
+    .courses {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 1000px) {
+    .edu {
+      grid-template-columns: 1fr 1.2fr;
+      align-items: start;
+    }
+  }
+</style>

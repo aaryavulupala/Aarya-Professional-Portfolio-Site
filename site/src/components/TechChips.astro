@@ -1,0 +1,25 @@
+---
+import { tech, type TechKey } from '../data/content';
+interface Props {
+  items: readonly TechKey[];
+  label: string;
+}
+const { items, label } = Astro.props;
+---
+
+{
+  items.length > 0 && (
+    <ul class="chips" aria-label={label}>
+      {items.map((k) => {
+        const t = tech[k];
+        const full = 'full' in t && t.full;
+        return (
+          <li class="chip">
+            <img class:list={['chip__logo', { 'chip__logo--full': full }]} src={`/logos/${t.logo}`} alt="" width="20" height="20" loading="lazy" decoding="async" />
+            {t.name}
+          </li>
+        );
+      })}
+    </ul>
+  )
+}

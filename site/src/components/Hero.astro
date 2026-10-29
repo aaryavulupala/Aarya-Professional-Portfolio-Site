@@ -1,0 +1,201 @@
+---
+import { person } from '../data/content';
+import DogLoader from './DogLoader.astro';
+import DesktopOS from './DesktopOS.astro';
+---
+
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="hero__grid" aria-hidden="true"></div>
+  <div class="wrap hero__inner">
+    <div class="hero__text">
+      <p class="mono hero__eyebrow rise" style="--i:0">{person.role} <span aria-hidden="true">·</span> {person.school} <span aria-hidden="true">·</span> CS + Data Science</p>
+      <h1 id="hero-title" class="display hero__name rise" style="--i:1">
+        <span>Aarya</span>
+        <span>Vulupala</span>
+      </h1>
+      <p class="hero__intro rise" style="--i:2">{person.intro}</p>
+      <div class="hero__actions rise" style="--i:3">
+        <a class="btn" href="#work">View projects <span aria-hidden="true">↓</span></a>
+        <a class="btn btn--ghost" href={person.resume} target="_blank" rel="noopener">Resume (PDF)</a>
+      </div>
+      <ul class="hero__links mono rise" style="--i:4">
+        <li><a class="link" href={person.github} target="_blank" rel="noopener">GitHub</a></li>
+        <li><a class="link" href={person.linkedin} target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a class="link link--quiet" href={`mailto:${person.emailPrimary}`}>{person.emailPrimary}</a></li>
+      </ul>
+    </div>
+
+    <aside class="hero__side" aria-label="About and live status">
+      <div class="rise" style="--i:2"><DesktopOS /></div>
+
+      <div class="panel rise" style="--i:4">
+        <p class="panel__title mono"><span class="panel__dot" aria-hidden="true"></span>status</p>
+        <dl>
+          <div>
+            <dt class="mono">latest commit</dt>
+            <dd id="commit" data-state="loading" aria-live="polite">
+              <span class="commit__loading"><DogLoader label="Loading latest commit" size={30} /><span class="muted">fetching from GitHub…</span></span>
+              <span class="commit__body" hidden></span>
+            </dd>
+          </div>
+          <div>
+            <dt class="mono">local time</dt>
+            <dd class="mono" id="clock" data-tz={person.timezone}>--:--</dd>
+          </div>
+          <div>
+            <dt class="mono">currently</dt>
+            <dd>{person.currently}</dd>
+          </div>
+        </dl>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<script>
+  import '../scripts/hero';
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    padding-block: clamp(40px, 7vw, 96px) var(--section-y);
+    isolation: isolate;
+  }
+  /* blueprint grid, hero only, fades out at the edges */
+  .hero__grid {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: linear-gradient(var(--rule) 1px, transparent 1px), linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+    background-size: 56px 56px;
+    opacity: 0.45;
+    mask-image: radial-gradient(ellipse 80% 70% at 30% 35%, #000 20%, transparent 75%);
+  }
+  .hero__inner {
+    display: grid;
+    gap: var(--space-7);
+  }
+  .hero__eyebrow {
+    color: var(--ink-muted);
+    margin-bottom: var(--space-5);
+  }
+  .hero__name {
+    font-size: var(--step-5);
+    display: flex;
+    flex-direction: column;
+    font-weight: 380;
+    line-height: 0.92;
+    margin-bottom: var(--space-6);
+  }
+  .hero__name span:last-child {
+    font-style: italic;
+    padding-left: 0.4em;
+  }
+  .hero__intro {
+    max-width: 52ch;
+    font-size: var(--step-1);
+    line-height: 1.5;
+    margin-bottom: var(--space-6);
+  }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+  }
+  .hero__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
+  }
+  .hero__side {
+    display: grid;
+    gap: var(--space-5);
+    align-content: start;
+  }
+
+  .panel {
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--paper-2) 70%, transparent);
+    padding: var(--space-4) var(--space-5);
+    max-width: 520px;
+  }
+  .panel__title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--ink-muted);
+    padding-bottom: var(--space-3);
+    margin-bottom: var(--space-3);
+    border-bottom: 1px dashed var(--rule);
+  }
+  .panel__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--signal);
+  }
+  .panel dl > div {
+    display: grid;
+    grid-template-columns: 7.2rem 1fr;
+    gap: var(--space-3);
+    padding-block: var(--space-2);
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+  .panel dt {
+    color: var(--ink-muted);
+    padding-top: 2px;
+  }
+  .panel dd {
+    min-width: 0;
+  }
+  .commit__loading {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  #commit[data-state='ready'] .commit__loading,
+  #commit[data-state='error'] .commit__loading,
+  #commit[data-state='empty'] .commit__loading {
+    display: none;
+  }
+  :global(.commit__msg) {
+    display: block;
+    overflow-wrap: anywhere;
+  }
+  :global(.commit__meta) {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--ink-muted);
+  }
+
+  /* one staggered entrance, ~0.7s total, runs once */
+  .rise {
+    animation: rise 0.7s var(--ease) both;
+    animation-delay: calc(var(--i) * 70ms);
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+
+  @media (min-width: 900px) {
+    .hero__inner {
+      grid-template-columns: 7fr 5fr;
+      gap: var(--space-8);
+      align-items: start;
+    }
+  }
+  @media (max-width: 520px) {
+    .panel dl > div {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+</style>

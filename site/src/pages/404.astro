@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import DogLoader from '../components/DogLoader.astro';
+---
+
+<Base title="Page not found · Aarya Vulupala" description="That page doesn't exist.">
+  <main id="main" class="lost">
+    <DogLoader label="A dog chasing its own tail" size={120} />
+    <p class="mono muted">404</p>
+    <h1 class="display">This page chased its tail and got lost.</h1>
+    <p><a class="btn" href="/">Back to the portfolio</a></p>
+  </main>
+</Base>
+
+<style>
+  .lost {
+    min-height: 100svh;
+    display: grid;
+    place-content: center;
+    justify-items: start;
+    gap: var(--space-5);
+    padding: var(--gutter);
+    max-width: 720px;
+    margin-inline: auto;
+  }
+  h1 {
+    font-size: var(--step-4);
+  }
+</style>

@@ -1,0 +1,76 @@
+---
+import { person } from '../data/content';
+import Section from './Section.astro';
+
+const rows = [
+  { label: 'Email', value: person.emailPrimary, href: `mailto:${person.emailPrimary}`, copy: true },
+  { label: 'School email', value: person.emailSchool, href: `mailto:${person.emailSchool}`, copy: true },
+  { label: 'LinkedIn', value: 'in/aarya-vulupala', href: person.linkedin, external: true },
+  { label: 'GitHub', value: 'aaryavulupala', href: person.github, external: true },
+  { label: 'Resume', value: 'Aarya_Vulupala_Resume.pdf', href: person.resume, external: true },
+];
+---
+
+<Section id="contact" num="05" label="Contact">
+  <p class="contact__line">Hiring, collaborating, or just curious about something I built? Email is fastest.</p>
+
+  <ul class="contact">
+    {
+      rows.map((r) => (
+        <li>
+          <span class="mono muted">{r.label}</span>
+          <a class="link contact__value" href={r.href} {...(r.external ? { target: '_blank', rel: 'noopener' } : {})}>{r.value}</a>
+          {r.copy && (
+            <button class="btn btn--ghost btn--small" type="button" data-copy={r.value} aria-label={`Copy ${r.label.toLowerCase()} address`}>Copy</button>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</Section>
+
+<style>
+  .contact__line {
+    font-family: var(--font-display);
+    font-size: var(--step-3);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    max-width: 24ch;
+    margin-bottom: var(--space-8);
+  }
+  .contact li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-1) var(--space-4);
+    align-items: center;
+    padding-block: var(--space-4);
+    border-top: 1px solid var(--rule);
+  }
+  .contact li:last-child {
+    border-bottom: 1px solid var(--rule);
+  }
+  .contact__value {
+    grid-column: 1;
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    letter-spacing: -0.01em;
+    overflow-wrap: anywhere;
+    justify-self: start;
+  }
+  .contact li > .btn {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+  @media (min-width: 800px) {
+    .contact li {
+      grid-template-columns: 9rem 1fr auto;
+    }
+    .contact li > .btn {
+      grid-column: 3;
+      grid-row: auto;
+    }
+    .contact__value {
+      grid-column: 2;
+    }
+  }
+</style>

@@ -1,0 +1,327 @@
+---
+import { Image } from 'astro:assets';
+import { person, projects } from '../data/content';
+import TechChips from './TechChips.astro';
+
+const files: Record<string, { name: string; tag: string }> = {
+  dormly: { name: 'dormly.app', tag: 'APP' },
+  'aarya-cuts': { name: 'aarya-cuts.app', tag: 'APP' },
+  'nba-predictor': { name: 'nba-predictor.py', tag: 'PY' },
+};
+---
+
+<div class="os" id="os">
+  <div class="os__menubar mono" aria-hidden="true">
+    <span><span class="os__dot"></span> aarya.os</span>
+    <span class="os__hint">click an icon · drag a window</span>
+  </div>
+
+  <div class="os__desk" id="desk">
+    <div class="mc-stage" role="img" aria-label="A pixel-art avatar of Aarya whose head follows your cursor. Click it to make it wave.">
+      <div class="mc" id="mc" aria-hidden="true"></div>
+      <div class="mc-shadow" aria-hidden="true"></div>
+    </div>
+
+    <ul class="os__icons" aria-label="Desktop">
+      {
+        projects.map((p) => (
+          <li>
+            <button class="icon" type="button" data-open={p.slug} aria-haspopup="dialog">
+              <svg viewBox="0 0 40 48" width="40" height="48" aria-hidden="true">
+                <path d="M4 2h22l10 10v34H4z" fill="var(--paper)" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round" />
+                <path d="M26 2v10h10" fill="var(--paper-2)" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round" />
+                <rect x="9" y="28" width="22" height="11" fill="var(--signal)" />
+                <text x="20" y="36.5" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-weight="500" font-size="8" fill="var(--on-signal)">{files[p.slug].tag}</text>
+              </svg>
+              <span class="mono">{files[p.slug].name}</span>
+            </button>
+          </li>
+        ))
+      }
+      <li>
+        <a class="icon" href={person.resume} target="_blank" rel="noopener">
+          <svg viewBox="0 0 40 48" width="40" height="48" aria-hidden="true">
+            <path d="M4 2h22l10 10v34H4z" fill="var(--paper)" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round" />
+            <path d="M26 2v10h10" fill="var(--paper-2)" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round" />
+            <rect x="9" y="28" width="22" height="11" fill="var(--ink)" />
+            <text x="20" y="36.5" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-weight="500" font-size="8" fill="var(--paper)">PDF</text>
+          </svg>
+          <span class="mono">resume.pdf</span>
+        </a>
+      </li>
+    </ul>
+
+    {
+      projects.map((p) => (
+        <section class="win" id={`win-${p.slug}`} role="dialog" aria-label={`${p.title} window`} tabindex="-1" hidden>
+          <header class="win__title">
+            <span class="win__name mono">{files[p.slug].name}</span>
+            <span class="win__btns">
+              <button type="button" data-min aria-label={`Minimize ${p.title}`}>–</button>
+              <button type="button" data-close aria-label={`Close ${p.title}`}>×</button>
+            </span>
+          </header>
+          <div class="win__body">
+            <Image src={p.image} alt="" widths={[480, 720]} sizes="360px" quality={72} loading="lazy" class:list={['win__img', { 'win__img--art': p.art }]} />
+            <p class="mono muted">{p.kind}</p>
+            <h3>{p.title}</h3>
+            <p class="win__sum">{p.summary}</p>
+            <dl class="win__stats">
+              {p.stats.slice(0, 3).map((s) => (
+                <div>
+                  <dd>{s.value}</dd>
+                  <dt class="muted">{s.label}</dt>
+                </div>
+              ))}
+            </dl>
+            <TechChips items={p.tech} label={`${p.title} technologies`} />
+            <p class="win__links mono">
+              <a class="link link--quiet" href={`#${p.slug}`} data-jump>Full details ↓</a>
+              {p.links.map((l) => <a class="link" href={l.href} target="_blank" rel="noopener">{l.label}</a>)}
+            </p>
+          </div>
+        </section>
+      ))
+    }
+  </div>
+
+  <div class="os__tray" id="tray" aria-label="Minimized windows" hidden></div>
+</div>
+
+<script>
+  import '../scripts/minecraft';
+  import '../scripts/desktop';
+</script>
+
+<style>
+  .os {
+    max-width: 520px;
+    border: 1.5px solid var(--ink);
+    border-radius: var(--radius);
+    background: var(--paper);
+    box-shadow: 6px 6px 0 color-mix(in srgb, var(--ink) 88%, transparent);
+    overflow: hidden;
+  }
+  .os__menubar {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: 6px 12px;
+    border-bottom: 1.5px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .os__dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 4px;
+    border-radius: 50%;
+    background: var(--signal);
+  }
+  .os__hint {
+    opacity: 0.7;
+  }
+  .os__desk {
+    position: relative;
+    height: 400px;
+    overflow: hidden;
+    background-color: var(--paper-2);
+    background-image: radial-gradient(var(--rule) 1.2px, transparent 1.4px);
+    background-size: 18px 18px;
+  }
+
+  .mc-stage {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 104px;
+    cursor: pointer;
+  }
+  .mc {
+    position: absolute;
+    inset: 0;
+    perspective: 900px;
+    perspective-origin: 50% 35%;
+  }
+  .mc-shadow {
+    position: absolute;
+    left: 50%;
+    bottom: 26px;
+    width: 120px;
+    height: 20px;
+    margin-left: -60px;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgb(0 0 0 / 0.28), transparent);
+  }
+
+  .os__icons {
+    position: absolute;
+    right: 8px;
+    top: 10px;
+    display: grid;
+    gap: 4px;
+    width: 92px;
+  }
+  .icon {
+    display: grid;
+    justify-items: center;
+    gap: 4px;
+    width: 100%;
+    padding: 6px 2px;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    background: none;
+    text-decoration: none;
+    cursor: pointer;
+    text-align: center;
+    line-height: 1.2;
+  }
+  .icon .mono {
+    font-size: 0.7rem;
+    overflow-wrap: anywhere;
+  }
+  .icon:hover,
+  .icon:focus-visible {
+    background: color-mix(in srgb, var(--signal) 14%, transparent);
+    border-color: var(--signal);
+  }
+
+  /* ---- windows ---- */
+  .win {
+    position: absolute;
+    width: min(340px, calc(100% - 16px));
+    max-height: calc(100% - 16px);
+    display: flex;
+    flex-direction: column;
+    border: 1.5px solid var(--ink);
+    border-radius: var(--radius);
+    background: var(--paper);
+    box-shadow: 5px 5px 0 color-mix(in srgb, var(--ink) 85%, transparent);
+    transform-origin: 50% 100%;
+    transition: transform 0.18s var(--ease), opacity 0.18s;
+  }
+  .win.is-min {
+    transform: translateY(40px) scale(0.6);
+    opacity: 0;
+  }
+  .win__title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: 4px 6px 4px 10px;
+    background: var(--ink);
+    color: var(--paper);
+    cursor: move;
+    touch-action: none;
+    user-select: none;
+  }
+  .win__btns {
+    display: flex;
+    gap: 4px;
+  }
+  .win__btns button {
+    width: 26px;
+    height: 26px;
+    border: 1px solid var(--paper);
+    border-radius: 3px;
+    background: transparent;
+    color: var(--paper);
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .win__btns button:hover {
+    background: var(--signal);
+    border-color: var(--signal);
+    color: var(--on-signal);
+  }
+  .win__body {
+    overflow: auto;
+    padding: var(--space-4);
+    display: grid;
+    gap: var(--space-3);
+    justify-items: start;
+  }
+  .win__img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    object-position: top left;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    background: var(--paper-2);
+  }
+  .win__img--art {
+    object-fit: contain;
+    background: #000;
+  }
+  .win__body h3 {
+    font-size: var(--step-1);
+    margin-top: calc(var(--space-2) * -1);
+  }
+  .win__sum {
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+  .win__stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
+  }
+  .win__stats div {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .win__stats dd {
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    line-height: 1;
+  }
+  .win__stats dt {
+    font-size: 0.75rem;
+    max-width: 14ch;
+    line-height: 1.25;
+  }
+  .win__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-4);
+  }
+
+  .os__tray {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: 6px 8px;
+    border-top: 1.5px solid var(--ink);
+    background: var(--paper);
+  }
+  :global(.os__tray button) {
+    padding: 2px 10px;
+    border: 1px solid var(--ink);
+    border-radius: 3px;
+    background: var(--paper-2);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    cursor: pointer;
+  }
+  :global(.os__tray button:hover) {
+    background: var(--signal);
+    color: var(--on-signal);
+    border-color: var(--signal);
+  }
+
+  @media (max-width: 520px) {
+    .os__desk {
+      height: 390px;
+    }
+    .os__hint {
+      display: none;
+    }
+  }
+</style>

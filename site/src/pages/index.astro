@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Palette from '../components/Palette.astro';
+import Hero from '../components/Hero.astro';
+import Projects from '../components/Projects.astro';
+import Experience from '../components/Experience.astro';
+import Education from '../components/Education.astro';
+import Skills from '../components/Skills.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Base
+  title="Aarya Vulupala · Software Engineer"
+  description="Software engineer and Rutgers CS + Data Science student. I built Dormly, a campus marketplace, the booking platform behind my barbershop, and ML models that predict NBA careers."
+>
+  <Header />
+  <main id="main">
+    <Hero />
+    <Projects />
+    <Experience />
+    <Education />
+    <Skills />
+    <Contact />
+  </main>
+  <Footer />
+  <Palette />
+  <script>
+    import '../scripts/chrome';
+  </script>
+</Base>

@@ -1,0 +1,148 @@
+---
+import { Image } from 'astro:assets';
+import type { Role, Leadership } from '../data/content';
+import TechChips from './TechChips.astro';
+
+interface Props {
+  item: Role | Leadership;
+}
+const { item } = Astro.props;
+const wide = 'wide' in item && item.wide;
+const photo = 'photo' in item ? item.photo : undefined;
+const descriptor = 'descriptor' in item ? item.descriptor : undefined;
+---
+
+<article class="role" id={item.slug} aria-labelledby={`${item.slug}-t`}>
+  <div class="role__meta">
+    <div class:list={['logo', { 'logo--wide': wide }]}>
+      <Image src={item.logo} alt={item.logoAlt} widths={[120, 240]} sizes="120px" quality={85} loading="lazy" data-fallback />
+    </div>
+    <p class="mono muted">{item.dates}</p>
+    <p class="mono muted">{item.place}</p>
+  </div>
+
+  <div class="role__main">
+    <h3 id={`${item.slug}-t`}>{item.title}</h3>
+    <p class="role__org">{item.org}</p>
+    {descriptor && <p class="role__desc muted">{descriptor}</p>}
+    <ul class="bullets">{item.bullets.map((b) => <li>{b}</li>)}</ul>
+
+    {
+      photo && (
+        <figure class="role__photo">
+          <Image src={photo.src} alt={photo.alt} widths={[480, 800, 1100]} sizes="(min-width: 900px) 560px, 92vw" quality={78} loading="lazy" data-fallback />
+        </figure>
+      )
+    }
+
+    <TechChips items={item.tech} label={`${item.org} technologies`} />
+
+    {
+      item.links.length > 0 && (
+        <ul class="role__links mono">
+          {item.links.map((l) => (
+            <li>
+              <a class="link" href={l.href} target="_blank" rel="noopener">{l.label}</a>
+              {l.note && <span class="muted"> — {l.note}</span>}
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .role {
+    display: grid;
+    gap: var(--space-4);
+    padding-block: var(--space-7);
+    border-top: 1px solid var(--rule);
+  }
+  .role:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+  .role__meta {
+    display: grid;
+    gap: 2px;
+    align-content: start;
+    justify-items: start;
+  }
+  .logo {
+    width: 72px;
+    height: 72px;
+    margin-bottom: var(--space-3);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    background: #fff;
+  }
+  .logo--wide {
+    width: 132px;
+    height: 56px;
+  }
+  .logo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 6px;
+  }
+  .logo--wide :global(img) {
+    padding: 6px;
+  }
+  h3 {
+    font-size: var(--step-2);
+  }
+  .role__org {
+    margin: var(--space-1) 0 var(--space-4);
+    font-size: var(--step-1);
+  }
+  .role__desc {
+    margin: calc(var(--space-3) * -1) 0 var(--space-4);
+    font-size: 0.95rem;
+  }
+  .bullets {
+    display: grid;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+    max-width: 66ch;
+  }
+  .bullets li {
+    position: relative;
+    padding-left: var(--space-5);
+  }
+  .bullets li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--signal);
+    font-family: var(--font-mono);
+  }
+  .role__photo {
+    max-width: 560px;
+    margin-bottom: var(--space-5);
+  }
+  .role__photo :global(img) {
+    width: 100%;
+    height: auto; /* Astro writes a height attribute; let the aspect ratio win */
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    object-position: top;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+  }
+  .role__links {
+    display: grid;
+    gap: var(--space-2);
+    margin-top: var(--space-5);
+  }
+  @media (min-width: 700px) {
+    .role {
+      grid-template-columns: 11rem 1fr;
+      gap: var(--space-6);
+    }
+  }
+</style>
